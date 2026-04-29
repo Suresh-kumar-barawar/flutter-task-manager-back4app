@@ -1,116 +1,145 @@
 # Task Manager App - Flutter CRUD with Back4App
 
-A Flutter-based task manager application that uses Back4App Parse Server as Backend-as-a-Service. The app supports student email registration/login, cloud task CRUD, automatic syncing, and secure logout.
+A Flutter-based Task Manager app that uses Back4App as Backend-as-a-Service (BaaS). The app supports student email registration/login, cloud task CRUD, automatic syncing, and secure logout.
+
+## Project Overview
+
+This assignment implements a Flutter CRUD application with Back4App for:
+
+- User authentication using email and password
+- Task creation, display, editing, completion, and deletion
+- Cloud database storage on Back4App
+- Per-user task ownership and secure access
+- Logout with session invalidation
 
 ## Features
 
-- User registration and login with email/password
-- Back4App Parse User authentication
-- Create, read, update, complete, and delete tasks
-- Per-user task ownership using a Parse pointer and ACL
-- Auto refresh every 8 seconds, with optional Live Query websocket support
-- Manual pull-to-refresh and sync button
-- Secure logout that invalidates the local session
-- Responsive Material 3 UI for web, Android, and desktop targets
+- ✅ User registration and login with student email credentials
+- ✅ Parse user authentication through Back4App
+- ✅ Create, read, update, and delete tasks
+- ✅ Mark tasks as done / undone
+- ✅ Per-user task ownership using `owner` pointer and ACL
+- ✅ Refresh / sync task list automatically
+- ✅ Manual pull-to-refresh and sync button
+- ✅ Secure logout
+- ✅ Responsive Material 3 UI for Flutter
 
-## Tech Stack
+## Technology Stack
 
 - Flutter / Dart
 - Back4App Parse Server
 - `parse_server_sdk_flutter`
 - GitHub for version control
+- Local device development
+
+## App Flow
+
+1. User opens the app.
+2. User registers with a student email and password or logs in.
+3. After authentication, the app loads the user's tasks.
+4. User can add a new task with title and description.
+5. User can edit or delete existing tasks.
+6. User can toggle task completion.
+7. User logs out securely.
 
 ## Back4App Configuration
 
-This project is already configured with the provided Back4App app:
+The app is already configured to connect with Back4App using the values stored in `lib/main.dart`:
 
-- App ID: `yn8KRSfm9hvvLjE2AkcxEDCBnB9VO7YGozMDQfir`
-- API URL: `https://parseapi.back4app.com`
-- Parse Server: `7.5.2`
+- Server URL: `https://parseapi.back4app.com`
 
-The app stores tasks in a Parse class named `Task`. The class is created automatically by Back4App the first time a task is saved, if client class creation is enabled.
+### Task class setup
 
-Task fields:
+The app uses a Back4App class named `Task` with the following fields:
 
 - `title` - String
 - `description` - String
 - `isDone` - Boolean
 - `owner` - Pointer to `_User`
-- `ACL` - Read/write access for the owner user
+- `ACL` - Access control list granting owner read/write access
 
-## Live Query Setup
+> Note: Back4App can create the `Task` class automatically when the first task is saved, if client class creation is enabled.
 
-The app works without extra setup by querying Back4App and auto-refreshing. For true Live Query websocket updates, enable it in Back4App:
+## Running the App
 
-1. Open Back4App dashboard.
-2. Go to **App Settings > Server Settings > Server URL and Live Query**.
-3. Activate a Back4App subdomain.
-4. Enable Live Query.
-5. Select the `Task` class for Live Query.
-6. Run the app with your subdomain:
+Open a terminal in the project folder and run:
 
 ```powershell
-C:\src\flutter\bin\flutter.bat run -d chrome `
-  --dart-define=PARSE_SERVER_URL=https://your-subdomain.b4a.io `
-  --dart-define=PARSE_LIVE_QUERY_URL=wss://your-subdomain.b4a.io
+flutter pub get
+flutter run
 ```
 
-Back4App Live Query docs: https://www.back4app.com/docs/platform/parse-live-query
-
-## Run Locally
-
-Flutter SDK was installed at `C:\src\flutter`.
+If you want to run on Chrome:
 
 ```powershell
-C:\src\flutter\bin\flutter.bat pub get
-C:\src\flutter\bin\flutter.bat run -d chrome
+flutter run -d chrome
 ```
 
-For Android:
+If you want to run on Android:
 
 ```powershell
-C:\src\flutter\bin\flutter.bat run -d android
+flutter run -d android
 ```
 
-For Windows desktop builds, enable Windows Developer Mode first because Flutter plugins need symlink support.
+### Optional Live Query setup
 
-## Verification
+The app supports optional Back4App Live Query if you enable it in Back4App and provide a custom URL.
 
-The project has been checked with:
+Run with:
 
 ```powershell
-C:\src\flutter\bin\flutter.bat analyze
-C:\src\flutter\bin\flutter.bat test
-C:\src\flutter\bin\flutter.bat build web
+flutter run -d chrome --dart-define=PARSE_SERVER_URL=https://your-subdomain.b4a.io --dart-define=PARSE_LIVE_QUERY_URL=wss://your-subdomain.b4a.io
 ```
 
-## Demo Video Flow
+## Verification and Testing
 
-Record a 2-minute video showing:
+Basic widget tests are included in `test/widget_test.dart`.
 
-1. Register with a student email.
-2. Logout.
-3. Login with the same account.
-4. Create a task with title and description.
-5. Edit the task.
-6. Mark the task completed.
-7. Delete the task.
-8. Logout securely.
+Run analysis and tests with:
 
-## Presentation
+```powershell
+flutter analyze
+flutter test
+```
 
-The PowerPoint file is included at:
 
-`docs/Task_Manager_Back4App_Presentation.pptx`
+## Demo Video Checklist
 
-## Screenshots
+Record a short demo showing:
+
+1. Register a new student email account
+2. Log out
+3. Log back in
+4. Create a task
+5. Edit a task
+6. Mark a task completed
+7. Delete a task
+8. Log out again
+
+## Included Files
+
+- `lib/main.dart` — app source code
+- `pubspec.yaml` — Flutter dependencies
+- `test/widget_test.dart` — widget smoke test
+- `README.md` — project documentation
+- `docs/Task_Manager_Back4App_Presentation.pptx` — presentation file
+- `docs/screenshots/login_screen.png` — login screen screenshot
+
+### Screenshot examples
 
 Login screen:
 
 ![Login screen](docs/screenshots/login_screen.png)
 
-Add more screenshots after creating demo data:
+Task list screen:
 
-- Task list
-- Add/Edit task dialog
-- Completed task state
+![Task list screen](docs/screenshots/task_list_screen.png)
+
+Add/Edit task dialog:
+
+![Task editor dialog](docs/screenshots/task_editor_dialog.png)
+
+Completed task view:
+
+![Completed task view](docs/screenshots/completed_task.png)
+
